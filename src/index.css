@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Fasthand&family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .button {
+    @apply text-white font-normal px-7 py-2 bg-[#f71747] hover:bg-[#df1742] rounded-3xl;
+  }
+}
