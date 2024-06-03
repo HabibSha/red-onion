@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { itemsInfo } from "../data";
-import { addToCart, decreaseCartItem } from "../features/cartSlice";
+import { addToCart, decreaseCartItem, getTotals } from "../features/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const SingleFoodItem = () => {
@@ -15,19 +15,25 @@ const SingleFoodItem = () => {
   const singleFoodItem = itemsInfo.find((item) => {
     return item.id === parseInt(foodId);
   });
-  const { id, title, category, img, price } = singleFoodItem;
+  const { title, category, img, price } = singleFoodItem;
 
   const handleAddToCart = (singleFoodItem) => {
     dispatch(addToCart(singleFoodItem));
+    dispatch(getTotals());
   };
 
   const handleDecreaseCart = (cartItem) => {
     dispatch(decreaseCartItem(cartItem));
+    dispatch(getTotals());
   };
 
   const handleIncreaseCart = (item) => {
     dispatch(addToCart(item));
+    dispatch(getTotals());
   };
+
+  // Check if the singleFoodItem exists in the cartItems array
+  const cartItem = cartItems.find((item) => item.id === singleFoodItem?.id);
 
   return (
     <section className="max-w-[1280px] mx-auto sm:py-12 py-6 px-6">
@@ -43,44 +49,39 @@ const SingleFoodItem = () => {
           <div className="flex items-center gap-5 my-6">
             <p className="text-[26px] font-medium">${price}</p>
 
-            <div>
-              {cartItems.map((cartItem) => {
-                return (
-                  <div
-                    key={cartItem.id}
-                    className="w-[90px] text-[18px] py-1 flex justify-around border-[1px] border-gray-200 shadow-sm rounded-3xl"
-                  >
-                    <button
-                      onClick={() => {
-                        handleDecreaseCart(cartItem);
-                      }}
-                    >
-                      -
-                    </button>
-                    <p>{cartItem.cartQuantity}</p>
-                    <button
-                      onClick={() => {
-                        handleIncreaseCart(cartItem);
-                      }}
-                      className="text-active"
-                    >
-                      +
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
+            {cartItem && (
+              <div className="w-[90px] text-[18px] py-1 flex justify-around border-[1px] border-gray-200 shadow-sm rounded-3xl">
+                <button
+                  onClick={() => {
+                    handleDecreaseCart(cartItem);
+                  }}
+                >
+                  -
+                </button>
+                <p>{cartItem.cartQuantity}</p>
+                <button
+                  onClick={() => {
+                    handleIncreaseCart(cartItem);
+                  }}
+                  className="text-active"
+                >
+                  +
+                </button>
+              </div>
+            )}
           </div>
           <div>
-            <button
-              onClick={() => handleAddToCart(singleFoodItem)}
-              className="button flex items-center gap-2 px-5"
-            >
-              <span>
-                <AiOutlineShoppingCart className="w-[22px] h-[22px] cursor-pointer" />
-              </span>
-              Add
-            </button>
+            {!cartItem && (
+              <button
+                onClick={() => handleAddToCart(singleFoodItem)}
+                className="button flex items-center gap-2 px-5"
+              >
+                <span>
+                  <AiOutlineShoppingCart className="w-[22px] h-[22px] cursor-pointer" />
+                </span>
+                Add
+              </button>
+            )}
           </div>
           <div className="mt-16">
             <img src={img} alt={category} className="w-[100px]" />

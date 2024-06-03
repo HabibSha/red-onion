@@ -5,6 +5,7 @@ const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+  isCheckoutEnabled: false,
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -26,19 +27,23 @@ const cartSlice = createSlice({
           }
         );
       } else {
-        const tempItem = { ...action.payload, cartQuantity: 1 };
-        state.cartItems.push(tempItem);
+        const newItem = { ...action.payload, cartQuantity: 1 };
+        state.cartItems.push(newItem);
         toast.success(`${action.payload.title} added to cart`, {
           position: "bottom-left",
         });
       }
+
+      state.isCheckoutEnabled = state.cartItems.length > 0;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+
     removeFromCart(state, action) {
       const nextCartItems = state.cartItems.filter(
         (cartItem) => cartItem.id !== action.payload.id
       );
       state.cartItems = nextCartItems;
+      state.isCheckoutEnabled = state.cartItems.length > 0;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
       toast.error(`${action.payload.title} remove from cart`, {
         position: "bottom-left",

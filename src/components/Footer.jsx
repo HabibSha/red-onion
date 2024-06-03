@@ -1,19 +1,20 @@
 import React from "react";
 
 import logo from "../assets/images/logo.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <section className="w-full bg-[#1a1919] py-6">
       <div className="max-w-[1280px] mx-auto text-white px-6 py-12">
         <div className="grid grid-cols-4 justify-items-end gap-x-9">
-          <div className="col-span-2 justify-self-start">
+          <Link to="/" className="col-span-2 justify-self-start">
             <img
               src={logo}
               alt="logo"
               className="sm:w-[128px] sm:h-[38px] w-[85px] h-[28px]"
             />
-          </div>
+          </Link>
           <div>
             <ul className="list-none text-gray-200 flex flex-col gap-2">
               <li>About Online Food</li>

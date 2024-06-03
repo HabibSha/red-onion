@@ -3,16 +3,19 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { addToCart } from "../features/cartSlice";
+import { addToCart, getTotals } from "../features/cartSlice";
 
-const CatItems = ({ item }) => {
+const CatItems = ({ item, handleAddToCart }) => {
   const { id, title, desc, category, img, price } = item;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleAddToCart = (foodItem) => {
+  const onAddToCart = (event, foodItem) => {
+    event.stopPropagation(); // Stop the event from bubbling up to other elements
     dispatch(addToCart(foodItem));
-    navigate("/cart");
+    dispatch(getTotals());
+    handleAddToCart(foodItem);
+    // navigate("/cart");
   };
 
   return (
@@ -37,7 +40,7 @@ const CatItems = ({ item }) => {
               </button>
             </Link>
             <AiOutlineShoppingCart
-              onClick={() => handleAddToCart(item)}
+              onClick={(e) => onAddToCart(e, item)}
               className="text-2xl"
             />
           </div>
