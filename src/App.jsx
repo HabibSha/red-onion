@@ -12,6 +12,7 @@ import Cart from "./components/Cart";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import ProtectedRoute from "./Routers/ProtectedRoute";
+import CompleteOrder from "./components/CompleteOrder";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/success-order" element={<CompleteOrder />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<SignIn />} />
             <Route path="*" element={<ErrorMessage />} />
