@@ -10,11 +10,9 @@ const CatItems = ({ item, handleAddToCart }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onAddToCart = (event, foodItem) => {
-    event.stopPropagation(); // Stop the event from bubbling up to other elements
-    dispatch(addToCart(foodItem));
+  const onAddToCart = () => {
+    dispatch(addToCart(item));
     dispatch(getTotals());
-    handleAddToCart(foodItem);
     // navigate("/cart");
   };
 
@@ -39,10 +37,7 @@ const CatItems = ({ item, handleAddToCart }) => {
                 Details <span>→</span>
               </button>
             </Link>
-            <AiOutlineShoppingCart
-              onClick={(e) => onAddToCart(e, item)}
-              className="text-2xl"
-            />
+            <AiOutlineShoppingCart onClick={onAddToCart} className="text-2xl" />
           </div>
         </div>
       </div>

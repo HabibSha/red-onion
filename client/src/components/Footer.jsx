@@ -16,32 +16,32 @@ const Footer = () => {
             />
           </Link>
           <div className="mt-12 sm:mt-0">
-            <ul className="list-none text-gray-200 flex flex-col gap-2">
-              <li>About Online Food</li>
-              <li>Read our Blog</li>
-              <li>Sign up to deliver</li>
-              <li>Add your restaurant</li>
+            <ul className="Linkst-none text-gray-200 flex flex-col gap-2">
+              <Link to="#">About OnLinkne Food</Link>
+              <Link to="#">Read our Blog</Link>
+              <Link to="#">Sign up to deLinkver</Link>
+              <Link to="#">Add your restaurant</Link>
             </ul>
           </div>
           <div className="mt-8 sm:mt-0">
-            <ul className="list-none text-gray-200 flex flex-col gap-2">
-              <li>Get help</li>
-              <li>Read FAQs</li>
-              <li>View all cities</li>
-              <li>Restaurants near me</li>
+            <ul className="Linkst-none text-gray-200 flex flex-col gap-2">
+              <Link to="#">Get help</Link>
+              <Link to="#">Read FAQs</Link>
+              <Link to="#">View all cities</Link>
+              <Link to="#">Restaurants near me</Link>
             </ul>
           </div>
         </div>
         <div className="flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-center mt-[70px] sm:mt-[100px]">
           <div className="order-2 sm:order-1">
             <p className="text-xs sm:text-sm text-[#8b8282]">
-              Copyright © 2023-2024 Online food
+              Copyright © 2023-2024 OnLinkne food
             </p>
           </div>
-          <ul className="flex gap-4 sm:order-2 sm:gap-8 md:gap-12 list-none text-gray-200">
-            <li>Privacy Policy</li>
-            <li>Terms of use</li>
-            <li>Price</li>
+          <ul className="flex gap-4 sm:order-2 sm:gap-8 md:gap-12 Linkst-none text-gray-200">
+            <Link to="#">Privacy PoLinkcy</Link>
+            <Link to="#">Terms of use</Link>
+            <Link to="#">Price</Link>
           </ul>
         </div>
       </div>

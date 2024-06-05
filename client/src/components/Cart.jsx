@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -14,14 +14,22 @@ import cartSlice, {
   removeFromCart,
 } from "../features/cartSlice";
 import DeliveryForm from "./DeliveryForm";
+import useAuth from "../custom-hooks/useAuth";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems, cartTotalQuantity, cartTotalAmount } = cart;
   const fixedTotalValue = cartTotalAmount.toFixed(2);
 
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
+  const handleFormSubmit = (status) => {
+    setIsFormSubmitted(status);
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     dispatch(getTotals());
@@ -64,6 +72,11 @@ const Cart = () => {
 
   // Payment integration
   const makePayment = async () => {
+    if (!currentUser) {
+      navigate("/login", { state: { from: "/cart" } });
+      return;
+    }
+
     const stripe = await loadStripe(
       "pk_test_51PNW6yB2krJwnDAUEEFwNPzBp1e2XDo0Hr9jtfw6XNGHnaMGwHPrlT8qDpdQ1zamb2oXx2jv6rCTAE0xOriwdfLa005P8iIC0J"
     );
@@ -87,8 +100,6 @@ const Cart = () => {
       }
     );
 
-    console.log(response);
-
     const session = await response.json();
 
     const result = stripe.redirectToCheckout({
@@ -111,7 +122,7 @@ const Cart = () => {
       </Link>
       <article className="sm:grid grid-cols-2 flex flex-col-reverse md:gap-10 sm:gap-16 gap-8">
         <div className="max-w-[470px]">
-          <DeliveryForm />
+          <DeliveryForm onFormSubmit={handleFormSubmit} />
         </div>
         <div className="max-w-[470px] lg:min-w-[420px] md:min-w-[360px] sm:min-w-[300px] grid justify-self-end">
           <div className="leading-7">
@@ -199,9 +210,15 @@ const Cart = () => {
             <div>
               <button
                 // onClick={() => navigate("/checkout")}
+                disabled={!isFormSubmitted}
                 onClick={makePayment}
-                className="w-full py-2 mt-5 text-white bg-black font-medium rounded-md"
+                className={`w-full py-2 mt-5 font-medium rounded-md ${
+                  isFormSubmitted
+                    ? "text-white bg-black"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                }`}
               >
+                {/* {currentUser ? "Place Order" : "Login First"} */}
                 Place Order
               </button>
             </div>

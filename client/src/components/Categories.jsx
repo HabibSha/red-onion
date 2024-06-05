@@ -6,7 +6,6 @@ import { itemsInfo } from "../data";
 import { useSelector, useDispatch } from "react-redux";
 import CateSelect from "./CateSelect";
 import CatItems from "./CatItems";
-import { addToCart } from "../features/cartSlice";
 
 const newCatValue = [
   ...new Set(itemsInfo.map((newCatItem) => newCatItem.category)),
@@ -33,10 +32,6 @@ const Categories = () => {
     setActiveCategory(category);
   };
 
-  const handleAddToCart = (foodItem) => {
-    dispatch(addToCart(foodItem));
-  };
-
   return (
     <div className="max-w-[1280px] mx-auto py-12 font-poppins md:px-6 px-4">
       <div className="text-center">
@@ -49,11 +44,7 @@ const Categories = () => {
 
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-8 mt-16 justify-items-center">
         {items.map((item) => (
-          <CatItems
-            key={item.id}
-            item={item}
-            handleAddToCart={handleAddToCart}
-          />
+          <CatItems key={item.id} item={item} />
         ))}
       </div>
       <div className="text-center md:py-12 pt-12">
@@ -62,7 +53,7 @@ const Categories = () => {
             isCheckoutEnabled ? "bg-black" : "bg-gray-300 cursor-not-allowed"
           }`}
           disabled={!isCheckoutEnabled}
-          onClick={() => navigate("/checkout")}
+          onClick={() => navigate("/cart")}
         >
           Checkout your food
         </button>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { toast } from "react-toastify";
 
@@ -14,6 +14,8 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/cart";
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const SignIn = () => {
       const user = userCredential.user;
       toast.success("successfully logged in");
       setIsLoading(false);
-      navigate("/checkout");
+      navigate(from);
     } catch (error) {
       setIsLoading(false);
       toast.error(error.message);
@@ -79,9 +81,10 @@ const SignIn = () => {
                 </div>
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full bg-[#f71747] hover:bg-[#df1742] mt-8 py-2 text-white font-medium rounded-sm"
                 >
-                  Login
+                  {isLoading ? "Loading..." : "Sign In"}
                 </button>
               </form>
               <p className="text-[14px] mt-2 text-gray-500">

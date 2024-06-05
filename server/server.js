@@ -11,9 +11,9 @@ app.use(cors());
 
 app.post("/api/create-checkout-session", async (req, res) => {
   const { foodItems } = req.body;
-  console.log(foodItems);
+  // console.log(foodItems);
   const cartItems = foodItems.cartItems || [];
-  console.log(cartItems);
+  // console.log(cartItems);
 
   const lineItems = cartItems.map((item) => ({
     price_data: {
