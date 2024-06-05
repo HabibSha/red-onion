@@ -48,7 +48,7 @@ const CompleteOrder = () => {
             />
             <div className="ml-2">
               <h3 className="font-medium">Hamim</h3>
-              <p className="text-gray-500">Your raider</p>
+              <p className="text-gray-500">Your rider</p>
             </div>
           </div>
 

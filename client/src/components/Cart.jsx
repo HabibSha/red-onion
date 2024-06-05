@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { loadStripe } from "@stripe/stripe-js";
+
 import { Link, useNavigate } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
@@ -59,6 +61,44 @@ const Cart = () => {
   }
 
   const total = cartTotalAmount + tax + deliveryFee;
+
+  // Payment integration
+  const makePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51PNW6yB2krJwnDAUEEFwNPzBp1e2XDo0Hr9jtfw6XNGHnaMGwHPrlT8qDpdQ1zamb2oXx2jv6rCTAE0xOriwdfLa005P8iIC0J"
+    );
+
+    const body = {
+      foodItems: {
+        cartItems,
+        tax,
+        deliveryFee,
+      },
+    };
+    const headers = {
+      "Content-type": "application/json",
+    };
+    const response = await fetch(
+      "http://localhost:8000/api/create-checkout-session",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      }
+    );
+
+    console.log(response);
+
+    const session = await response.json();
+
+    const result = stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      console.log(result.error);
+    }
+  };
 
   return (
     <section className="max-w-[1280px] mx-auto py-12 font-poppins md:px-6 px-4">
@@ -158,7 +198,8 @@ const Cart = () => {
             </div>
             <div>
               <button
-                onClick={() => navigate("/checkout")}
+                // onClick={() => navigate("/checkout")}
+                onClick={makePayment}
                 className="w-full py-2 mt-5 text-white bg-black font-medium rounded-md"
               >
                 Place Order
