@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import vehicle from "../assets/images/vehicle.png";
 import rider from "../assets/images/helmet.png";
+import { clearCart, getTotals } from "../features/cartSlice";
 
 const CompleteOrder = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Clear the cart
+    dispatch(clearCart());
+    dispatch(getTotals());
+
+    // Show success message
+    toast.success("Payment successful! Your order has been placed.");
+  }, [dispatch, navigate]);
+
   return (
     <section className="max-w-[1280px] mx-auto py-12 font-poppins md:px-6 px-4">
-      <div className="grid grid-cols-3 gap-12">
+      <div className="grid gap-4 xl:grid-cols-3 xl:gap-12">
         <article className="col-span-2">
           Here will be the map functionality
         </article>
@@ -53,9 +70,11 @@ const CompleteOrder = () => {
           </div>
 
           {/* Contact Button */}
-          <button className="bg-[#f71747] text-white w-full py-2 rounded-lg font-medium hover:bg-[#db1a44] transition-colors">
-            Contact
-          </button>
+          <Link to="/">
+            <button className="bg-[#f71747] text-white w-full py-2 rounded-lg font-medium hover:bg-[#db1a44] transition-colors">
+              Contact
+            </button>
+          </Link>
         </article>
       </div>
     </section>

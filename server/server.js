@@ -21,7 +21,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
       product_data: {
         name: item.title,
       },
-      unit_amount: item.price * 100,
+      unit_amount: Math.round(item.price * 100),
     },
     quantity: item.cartQuantity,
   }));
@@ -34,7 +34,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
         product_data: {
           name: "Tax",
         },
-        unit_amount: foodItems.tax * 100,
+        unit_amount: Math.round(foodItems.tax * 100),
       },
       quantity: 1,
     });
@@ -48,7 +48,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
         product_data: {
           name: "Delivery Fee",
         },
-        unit_amount: foodItems.deliveryFee * 100,
+        unit_amount: Math.round(foodItems.deliveryFee * 100),
       },
       quantity: 1,
     });

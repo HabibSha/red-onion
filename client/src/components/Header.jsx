@@ -19,6 +19,7 @@ const Header = () => {
     signOut(auth)
       .then(() => {
         toast.success("Logged out");
+        localStorage.removeItem("isFormSubmitted");
       })
       .catch((error) => {
         toast.error(error.message);

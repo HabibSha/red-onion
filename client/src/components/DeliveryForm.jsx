@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { toast } from "react-toastify";
+
 const DeliveryForm = ({ onFormSubmit }) => {
   const [formData, setFormData] = useState({
     deliveryLocation: "",
@@ -30,6 +32,16 @@ const DeliveryForm = ({ onFormSubmit }) => {
     e.preventDefault();
     if (isFormValid) {
       onFormSubmit(true);
+      setFormData({
+        deliveryLocation: "",
+        roadNo: "",
+        flatSuiteFloor: "",
+        businessName: "",
+        deliveryInstructions: "",
+      });
+      toast.success("Successfully submitted");
+    } else {
+      toast.error("Please fill in all required fields");
     }
   };
 
@@ -37,7 +49,7 @@ const DeliveryForm = ({ onFormSubmit }) => {
     <div>
       <h3 className="text-[19px] font-medium pb-2">Edit Delivery Details</h3>
       <hr className="border-gray-400 border-[1px]" />
-      <form className="mt-8" onClick={handleSubmit}>
+      <form className="mt-8" onSubmit={handleSubmit}>
         <input
           type="text"
           name="deliveryLocation"
@@ -45,6 +57,7 @@ const DeliveryForm = ({ onFormSubmit }) => {
           required
           className="bg-gray-100 w-full placeholder:text-[14px] placeholder:text-gray-500 px-4 py-1 rounded-sm mb-5"
           onChange={handleChange}
+          value={formData.deliveryLocation}
         />
         <input
           type="text"
@@ -53,6 +66,7 @@ const DeliveryForm = ({ onFormSubmit }) => {
           required
           className="bg-gray-100 w-full placeholder:text-[14px] placeholder:text-gray-500 px-4 py-1 rounded-sm mb-5"
           onChange={handleChange}
+          value={formData.roadNo}
         />
         <input
           type="text"
@@ -61,6 +75,7 @@ const DeliveryForm = ({ onFormSubmit }) => {
           required
           className="bg-gray-100 w-full placeholder:text-[14px] placeholder:text-gray-500 px-4 py-1 rounded-sm mb-5"
           onChange={handleChange}
+          value={formData.flatSuiteFloor}
         />
         <input
           type="text"
@@ -68,14 +83,15 @@ const DeliveryForm = ({ onFormSubmit }) => {
           placeholder="Business Name"
           className="bg-gray-100 w-full placeholder:text-[14px] placeholder:text-gray-500 px-4 py-1 rounded-sm mb-5"
           onChange={handleChange}
+          value={formData.businessName}
         />
-        <input
-          type="textarea"
+        <textarea
           name="deliveryInstructions"
           placeholder="Add delivery instructor"
           required
           className="bg-gray-100 w-full placeholder:text-[14px] placeholder:text-gray-500 px-4 pt-1 pb-10 rounded-sm mb-5"
           onChange={handleChange}
+          value={formData.deliveryInstructions}
         />
         <button
           type="submit"

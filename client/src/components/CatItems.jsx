@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { addToCart, getTotals } from "../features/cartSlice";
 
-const CatItems = ({ item, handleAddToCart }) => {
+const CatItems = ({ item }) => {
   const { id, title, desc, category, img, price } = item;
   const dispatch = useDispatch();
   const navigate = useNavigate();

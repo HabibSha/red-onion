@@ -21,10 +21,13 @@ const Cart = () => {
   const { cartItems, cartTotalQuantity, cartTotalAmount } = cart;
   const fixedTotalValue = cartTotalAmount.toFixed(2);
 
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(() => {
+    return localStorage.getItem("isFormSubmitted") === "true";
+  });
 
   const handleFormSubmit = (status) => {
     setIsFormSubmitted(status);
+    localStorage.setItem("isFormSubmitted", status);
   };
 
   const dispatch = useDispatch();
@@ -91,23 +94,32 @@ const Cart = () => {
     const headers = {
       "Content-type": "application/json",
     };
-    const response = await fetch(
-      "http://localhost:8000/api/create-checkout-session",
-      {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(body),
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/create-checkout-session",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body),
+        }
+      );
+
+      const session = await response.json();
+
+      if (!session.id) {
+        throw new Error("Session ID not returned");
       }
-    );
 
-    const session = await response.json();
+      const result = stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
 
-    const result = stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-
-    if (result.error) {
-      console.log(result.error);
+      if (result.error) {
+        console.log(result.error);
+      }
+    } catch (error) {
+      console.error("Error during payment:", error);
     }
   };
 
